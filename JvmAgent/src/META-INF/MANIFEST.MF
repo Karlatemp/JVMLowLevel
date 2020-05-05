@@ -1,0 +1,5 @@
+Premain-Class: io.github.karlatemp.jll.agent.LowLevelAgent
+Manifest-Version: 1.0
+Can-Redefine-Classes: true
+Can-Retransform-Classes: true
+Can-Set-Native-Method-Prefix: true

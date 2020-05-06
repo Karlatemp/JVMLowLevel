@@ -1,7 +1,8 @@
 *.iml
 /dist
 /out
-Test.*
+Test.kt
+Test.java
 test/
 /.idea
 

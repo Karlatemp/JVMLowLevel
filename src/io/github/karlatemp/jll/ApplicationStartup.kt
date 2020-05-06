@@ -2,7 +2,6 @@
 
 package io.github.karlatemp.jll
 
-import cn.mcres.karlatemp.unsafe.Reflection
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 import org.objectweb.asm.commons.ClassRemapper
@@ -11,11 +10,7 @@ import org.objectweb.asm.tree.ClassNode
 import sun.misc.Unsafe
 import sun.reflect.ReflectionFactory
 import java.lang.instrument.Instrumentation
-import java.lang.invoke.LambdaMetafactory
-import java.lang.invoke.MethodHandles
-import java.lang.invoke.MethodType
 import java.lang.reflect.Modifier
-import java.util.function.Consumer
 import java.util.function.Supplier
 
 object ApplicationStartup {

@@ -99,6 +99,9 @@ object ApplicationStartup {
 
     fun initialize() {
         val of = unsafe.allocateInstance(OverrideReflectionFactory::class.java) as OverrideReflectionFactory
+        if(!sun.reflect.ReflectionFactory::class.isInstance(of)) {
+            error("Oops. This is not working!")
+        }
         instrumentation.allLoadedClasses.forEach {
             kotlin.runCatching {
                 it.declaredFields.forEach { field ->

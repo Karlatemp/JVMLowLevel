@@ -43,13 +43,13 @@ object ApplicationStartup {
                     reader.accept(it, 0)
                 }
             }.let {
-                if (it.name == "io/github/karlatemp/jll/ReflectionFactoryModule")
+                if (it.name == "io/github/karlatemp/jll/ReflectionFactoryModel")
                     return@addTransformer classfileBuffer
                 val writer = ClassWriter(0)
                 it.accept(
                     ClassRemapper(
                         writer, SimpleRemapper(
-                            "io/github/karlatemp/jll/ReflectionFactoryModule",
+                            "io/github/karlatemp/jll/ReflectionFactoryModel",
                             "sun/reflect/ReflectionFactory"
                         )
                     )
@@ -60,10 +60,10 @@ object ApplicationStartup {
         classReflectionDataOffset = unsafe.objectFieldOffset(Class::class.java.getDeclaredField("reflectionData"))
     }
 
-    fun makeReflectionFactoryModule() {
+    fun makeReflectionFactoryModel() {
         println("package io.github.karlatemp.jll;")
         println("@SuppressWarnings({\"rawtypes\"})")
-        println("public class ReflectionFactoryModule {")
+        println("public class ReflectionFactoryModel {")
         ReflectionFactory::class.java.declaredMethods.forEach {
             val access = it.modifiers
             if (it.name == "<clinit>" || it.name == "<init>") return@forEach

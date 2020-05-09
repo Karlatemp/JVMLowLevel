@@ -1,7 +1,7 @@
 package io.github.karlatemp.jll;
 
 @SuppressWarnings({"rawtypes"})
-public class ReflectionFactoryModule {
+public class ReflectionFactoryModel {
     public native java.lang.reflect.Constructor newConstructor(java.lang.Class var0, java.lang.Class[] var1, java.lang.Class[] var2, int var3, int var4, java.lang.String var5, byte[] var6, byte[] var7);
 
     public native java.lang.reflect.Field newField(java.lang.Class var0, java.lang.String var1, java.lang.Class var2, int var3, int var4, java.lang.String var5, byte[] var6);

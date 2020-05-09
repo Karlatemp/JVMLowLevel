@@ -12,7 +12,7 @@ import java.lang.reflect.Field
 import java.lang.reflect.Method
 
 // Don't use object, it is not support
-class OverrideReflectionFactory private constructor() : ReflectionFactoryModule() {
+class OverrideReflectionFactory private constructor() : ReflectionFactoryModel() {
     companion object {
         private val unsafeAccess = listOf(
             MethodHandles::class.java,

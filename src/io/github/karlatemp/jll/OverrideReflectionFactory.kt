@@ -13,18 +13,8 @@ import java.lang.reflect.Method
 
 // Don't use object, it is not support
 class OverrideReflectionFactory private constructor() : ReflectionFactoryModel() {
-    companion object {
-        private val unsafeAccess = listOf(
-            MethodHandles::class.java,
-            MethodHandles.Lookup::class.java,
-            Unsafe::class.java,
-            ReflectionFactory::class.java,
-            MethodHandle::class.java
-        )
-    }
-
     private fun isUnsafe(klass: Class<*>): Boolean {
-        unsafeAccess.forEach {
+        UnsafeAccessConst.unsafe.forEach {
             if (it.isAssignableFrom(klass)) return@isUnsafe true
         }
         return false

@@ -17,7 +17,7 @@ import java.util.function.Supplier
 
 object ApplicationStartup {
     private val instrumentation: Instrumentation
-    private val unsafe: Unsafe
+    internal val unsafe: Unsafe
     private val classReflectionDataOffset: Long
 
     init {
@@ -128,7 +128,7 @@ object ApplicationStartup {
     @JvmStatic
     fun main(args: Array<String>) {
         initialize()
-        testMagicAccessorImpl()
+        println(LookupMapping)
     }
 
     fun testMagicAccessorImpl() {

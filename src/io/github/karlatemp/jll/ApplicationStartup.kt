@@ -4,6 +4,8 @@ package io.github.karlatemp.jll
 
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Label
+import org.objectweb.asm.Opcodes
 import org.objectweb.asm.commons.ClassRemapper
 import org.objectweb.asm.commons.SimpleRemapper
 import org.objectweb.asm.tree.ClassNode
@@ -99,7 +101,7 @@ object ApplicationStartup {
 
     fun initialize() {
         val of = unsafe.allocateInstance(OverrideReflectionFactory::class.java) as OverrideReflectionFactory
-        if(!sun.reflect.ReflectionFactory::class.isInstance(of)) {
+        if (!sun.reflect.ReflectionFactory::class.isInstance(of)) {
             error("Oops. This is not working!")
         }
         instrumentation.allLoadedClasses.forEach {
@@ -114,10 +116,55 @@ object ApplicationStartup {
             }
         }
         clearReflectionData()
+        instrumentation.addTransformer(MagicAccessorImplBlocking)
+    }
+
+    private object loader : ClassLoader() {
+        fun defineClass(code: ByteArray): Class<*> {
+            return defineClass(null, code, 0, code.size)
+        }
     }
 
     @JvmStatic
     fun main(args: Array<String>) {
         initialize()
+        testMagicAccessorImpl()
+    }
+
+    fun testMagicAccessorImpl() {
+        val met = Runnable::class.java.getMethod("run").also { it.isAccessible = true }
+        val runnable = Runnable { }
+        repeat(50) {
+            met.invoke(runnable)
+        }
+        ClassWriter(0).also {
+            with(it) {
+                visit(
+                    Opcodes.V1_8, Opcodes.ACC_PUBLIC, "test", null, "sun/reflect/MethodAccessorImpl", arrayOf(
+                        "java/lang/Runnable"
+                    )
+                )
+                with(visitMethod(Opcodes.ACC_PUBLIC, "run", "()V", null, null)) {
+                    visitLineNumber(0, Label().also { visitLabel(it) })
+                    visitFieldInsn(Opcodes.ACC_PUBLIC, "java/lang/System", "out", "Ljava/io/PrintStream;")
+                    visitLdcInsn("HelloWorld")
+                    visitMethodInsn(
+                        Opcodes.INVOKEVIRTUAL,
+                        "java/io/PrintStream",
+                        "println",
+                        "(Ljava/lang/String;)V",
+                        false
+                    )
+                    visitInsn(Opcodes.RETURN)
+                    visitMaxs(5, 5)
+                }
+            }
+        }.toByteArray().let {
+            loader.defineClass(it)
+        }.let {
+            unsafe.allocateInstance(it)
+        }.let {
+            it as Runnable
+        }.run()
     }
 }

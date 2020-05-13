@@ -5,6 +5,8 @@
   - [X] JDK 8
   - [ ] JDK 13
 - [ ] MethodHandles 越权拦截 | Blocking MethodHandles
+  - [X] JDK 8
+  - [ ] JDK 13
 - [ ] Unsafe 拦截 | Blocking Unsafe
 - [ ] MagicAccessorImpl 拦截 | Blocking MagicAccessorImpl
   - [X] JDK 8

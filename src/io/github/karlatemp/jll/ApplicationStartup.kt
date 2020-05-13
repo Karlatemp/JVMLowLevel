@@ -12,11 +12,13 @@ import org.objectweb.asm.tree.ClassNode
 import sun.misc.Unsafe
 import sun.reflect.ReflectionFactory
 import java.lang.instrument.Instrumentation
+import java.lang.invoke.MethodHandles
+import java.lang.invoke.MethodType
 import java.lang.reflect.Modifier
 import java.util.function.Supplier
 
 object ApplicationStartup {
-    private val instrumentation: Instrumentation
+    internal val instrumentation: Instrumentation
     internal val unsafe: Unsafe
     private val classReflectionDataOffset: Long
 
@@ -128,7 +130,24 @@ object ApplicationStartup {
     @JvmStatic
     fun main(args: Array<String>) {
         initialize()
-        println(LookupMapping)
+        LookupMapping.load()
+        testMethodHandlesLookupBlocking()
+    }
+
+    fun testMethodHandlesLookupBlocking() {
+        @Suppress("ObjectLiteralToLambda")
+        val runnable: Runnable = (object : Runnable {
+            override fun run() {
+                val lk = MethodHandles.lookup()
+                println(
+                    lk.findVirtual(
+                        MethodHandles.Lookup::class.java, "lookupClass",
+                        MethodType.methodType(Class::class.java)
+                    )
+                )
+            }
+        })
+        runnable.run()
     }
 
     fun testMagicAccessorImpl() {

@@ -25,20 +25,7 @@ object MagicAccessorImplBlocking : ClassFileTransformer {
             }
             val superClass = node.superName ?: return classfileBuffer
             if (check(loader, superClass)) {
-                node.methods.forEach {
-                    it.instructions.clear()
-                    it.visitTypeInsn(Opcodes.NEW, "java/lang/VerifyError")
-                    it.visitInsn(Opcodes.DUP)
-                    it.visitLdcInsn("Cannot access MagicAccessorImpl out of DelegatingClassLoader")
-                    it.visitMethodInsn(
-                        Opcodes.INVOKESPECIAL,
-                        "java/lang/VerifyError",
-                        "<init>",
-                        "(Ljava/lang/String;)V",
-                        false
-                    )
-                    it.visitInsn(Opcodes.ATHROW)
-                }
+                node.makeVerityError()
                 return ClassWriter(0).also { node.accept(it) }.toByteArray()
             }
         }

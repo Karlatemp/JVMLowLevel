@@ -3,6 +3,8 @@ package io.github.karlatemp.jll
 import org.objectweb.asm.*
 
 open class BytecodeScanner {
+    object BreakingException : RuntimeException(null, null, false, false)
+
     open fun visitClass(klass: String) {}
     open fun visitField(klass: String, field: String, desc: String) {}
     open fun visitMethod(klass: String, name: String, desc: String, opcode: Int) {}
@@ -17,7 +19,10 @@ open class BytecodeScanner {
     }
 
     fun view(visitor: ClassVisitor.() -> Unit) {
-        ClassView().visitor()
+        try {
+            ClassView().visitor()
+        } catch (ignored: BreakingException) {
+        }
     }
 
     private inner class ClassView : ClassVisitor(Opcodes.ASM7) {

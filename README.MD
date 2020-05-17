@@ -70,7 +70,7 @@ instrumentation.addTransformer { loader, className, classBeingRedefined, protect
             reader.accept(it, 0)
         }
     }.let {
-        // If the class it the model, ignore it
+        // If the class is the model, ignore it
         if (it.name == "io/github/karlatemp/jll/ReflectionFactoryModel")
             return@addTransformer classfileBuffer
         val writer = ClassWriter(0)

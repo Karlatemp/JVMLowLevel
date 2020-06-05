@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2018-2020 Karlatemp. All rights reserved.
  * @author Karlatemp <karlatemp@vip.qq.com> <https://github.com/Karlatemp>
- * @create 2020/05/17 13:48:43
+ * @create 2020/06/05 17:46:32
  *
- * JVMLowLevel/JVMLowLevel/ReflectionFactoryModel.java
+ * JVMLowLevel/JVM-LowLevel.main/ReflectionFactoryModel.java
  */
 
 package io.github.karlatemp.jll;
 
-@SuppressWarnings({"rawtypes"})
+@SuppressWarnings({"rawtypes", "unused", "FinalPrivateMethod"})
 public class ReflectionFactoryModel {
     public native java.lang.reflect.Constructor newConstructor(java.lang.Class var0, java.lang.Class[] var1, java.lang.Class[] var2, int var3, int var4, java.lang.String var5, byte[] var6, byte[] var7);
 

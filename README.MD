@@ -47,7 +47,7 @@ unsafe.ensureClassInitialized(ClassNode::class.java)
 
 ## Redirect Reflection(JDK 8)
 Make a model of `sun.reflect.ReflectionFactory`, like
-[ReflectionFactoryModel](src/io/github/karlatemp/jll/ReflectionFactoryModel.java)
+[ReflectionFactoryModel](src/main/java/io/github/karlatemp/jll/ReflectionFactoryModel.java)
 
 Then make a class to extend it. like
 ```kotlin
